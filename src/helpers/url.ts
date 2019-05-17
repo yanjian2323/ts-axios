@@ -1,5 +1,4 @@
-import { isDate, isOjbect } from './util'
-import { debug } from 'util'
+import { isDate, isPlainOjbect } from './util'
 
 function encode(str: string): string {
   return encodeURIComponent(str)
@@ -33,7 +32,7 @@ export function buildURL(url: string, params?: any): string {
     values.forEach(val => {
       if (isDate(val)) {
         val = val.toISOString()
-      } else if (isOjbect(val)) {
+      } else if (isPlainOjbect(val)) {
         val = JSON.stringify(val)
       }
       parts.push(`${encode(key)}=${encode(val)}`)
