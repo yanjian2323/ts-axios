@@ -1,5 +1,6 @@
-import { AxiosRequestConfig, AxiosPromise, AxiosResponse } from './types/index'
+import { AxiosRequestConfig, AxiosPromise, AxiosResponse, AxiosError } from './types/index'
 import { parseResponseHeaders } from './helpers/headers'
+import createAxiosError from './helpers/error'
 
 export default function xhr(config: AxiosRequestConfig): AxiosPromise {
   return new Promise((resolve, reject) => {
@@ -16,10 +17,12 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
       xhr.timeout = timeout
     }
     xhr.onerror = () => {
-      reject(new Error('Network Error'))
+      // reject(new Error('Network Error'))
+      reject(createAxiosError('Network Error', null, config, xhr))
     }
     xhr.ontimeout = () => {
-      reject(new Error(`Timeout of ${timeout} ms exceeded`))
+      // reject(new Error(`Timeout of ${timeout} ms exceeded`))
+      reject(createAxiosError(`Timeout of ${timeout} ms exceeded`, 'ECONNABORTED', config, xhr))
     }
 
     xhr.onreadystatechange = () => {
@@ -42,7 +45,16 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
       if (response.status >= 200 && response.status < 300) {
         resolve(response)
       } else {
-        reject(new Error(`Request failed with status code ${response.status}`))
+        // reject(new Error(`Request failed with status code ${response.status}`))
+        reject(
+          createAxiosError(
+            `Request failed with status code ${response.status}`,
+            null,
+            config,
+            xhr,
+            response
+          )
+        )
       }
     }
     xhr.send(data)
