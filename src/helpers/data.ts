@@ -11,7 +11,9 @@ export function transformResponseData(data: any): any {
   if (typeof data === 'string') {
     try {
       resData = JSON.parse(data)
-    } catch (ex) {}
+    } catch (ex) {
+      // todo
+    }
   }
 
   return resData
