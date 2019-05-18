@@ -5,3 +5,14 @@ export function transformRequestData(data: any) {
   }
   return data
 }
+
+export function transformResponseData(data: any): any {
+  let resData = data
+  if (typeof data === 'string') {
+    try {
+      resData = JSON.parse(data)
+    } catch (ex) {}
+  }
+
+  return resData
+}
