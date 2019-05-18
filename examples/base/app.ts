@@ -59,3 +59,46 @@ axios({
   }
 })
 
+// post,会自动添加content-type:application/json
+axios({
+  url: '/base/post',
+  method: 'post',
+  data: {
+    name: 'yanj',
+    age: 25,
+  }
+}).then((res) => {
+  console.log(res)
+})
+
+// post传递
+axios({
+  url: '/base/buffer',
+  method: 'post',
+  data: new Int32Array([12,24]),
+})
+
+// 设置headers
+axios({
+  url: '/base/post',
+  method: 'post',
+  headers: {
+    'content-type': 'application/json',
+    'Accept': 'application/json, text/plain, */*',
+  },
+  responseType: 'json',
+  data: {
+    name: 'yanj',
+    age: 25,
+  }
+}).then((res) => {
+  console.log(res)
+})
+
+// data传递URLSearchParams类型，浏览器会自动添加content-type:application/x-www-form-urlencoded
+axios({
+  url: '/base/post',
+  method: 'post',
+  data: new URLSearchParams('q=URLUtils.searchParams&topic=api')
+})
+
