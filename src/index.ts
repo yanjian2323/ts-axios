@@ -1,4 +1,4 @@
-import axios from './axios'
+import axios from './core/axiosInstance'
 export * from './types/index'
 
 export default axios

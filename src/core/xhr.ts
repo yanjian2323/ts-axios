@@ -1,6 +1,6 @@
-import { AxiosRequestConfig, AxiosPromise, AxiosResponse, AxiosError } from './types/index'
-import { parseResponseHeaders } from './helpers/headers'
-import createAxiosError from './helpers/error'
+import { AxiosRequestConfig, AxiosPromise, AxiosResponse, AxiosError } from '../types/index'
+import { parseResponseHeaders } from '../helpers/headers'
+import createAxiosError from '../helpers/error'
 
 export default function xhr(config: AxiosRequestConfig): AxiosPromise {
   return new Promise((resolve, reject) => {
@@ -9,7 +9,7 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
     if (responseType) {
       xhr.responseType = responseType
     }
-    xhr.open(method, url, true)
+    xhr.open(method, url!, true)
     Object.keys(headers).forEach(headerName => {
       xhr.setRequestHeader(headerName, headers[headerName])
     })
