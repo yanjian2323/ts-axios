@@ -1,8 +1,29 @@
-import { AxiosRequestConfig, AxiosPromise, Method } from '../types'
+import {
+  AxiosRequestConfig,
+  AxiosPromise,
+  Method,
+  AxiosResponse,
+  resolveFn,
+  rejecteFn,
+  Interceptors
+} from '../types'
+import InterceptorManager from './interceptorManager'
 import dispatchRequest from './dispatchRequest'
 
+interface PromiseChain<T> {
+  resolve: resolveFn<T>
+  reject?: rejecteFn
+}
+
 export default class Axios {
-  request(url: any, config: any): AxiosPromise {
+  interceptors: Interceptors
+  constructor() {
+    this.interceptors = {
+      request: new InterceptorManager<AxiosRequestConfig>(),
+      response: new InterceptorManager<AxiosResponse>()
+    }
+  }
+  request(url: any, config?: any): AxiosPromise {
     if (typeof url === 'string') {
       if (!config) {
         config = {}
@@ -11,7 +32,27 @@ export default class Axios {
     } else {
       config = url
     }
-    return dispatchRequest(config)
+
+    const chain: PromiseChain<any>[] = [
+      {
+        resolve: dispatchRequest,
+        reject: undefined
+      }
+    ]
+    this.interceptors.request.forEach(interceptor => {
+      chain.unshift(interceptor)
+    })
+    this.interceptors.response.forEach(interceptor => {
+      chain.push(interceptor)
+    })
+    let promise = Promise.resolve(config)
+    while (chain.length) {
+      const interceptor = chain.shift()
+      const { resolve, reject } = interceptor!
+      promise = promise.then(resolve, reject)
+    }
+
+    return promise
   }
 
   get(url: string, config?: AxiosRequestConfig): AxiosPromise {
