@@ -1,4 +1,5 @@
 import axios from '../../src/index'
+import {ResponseData, User} from './type'
 
 // axios({
 //   url: '/extend/post',
@@ -30,13 +31,32 @@ import axios from '../../src/index'
 //   type: 'patch',
 // })
 
-axios('/extend/get', {
-  method: 'get',
-})
+// axios('/extend/get', {
+//   method: 'get',
+// })
 
-axios('/extend/post', {
-  method: 'post',
-  data: {
-    name: 'yanj'
-  }
-})
+// axios('/extend/post', {
+//   method: 'post',
+//   data: {
+//     name: 'yanj'
+//   }
+// })
+
+function getUser() {
+  axios<ResponseData<User>>({
+    url: '/extend/user',
+  }).then((res) => {
+    console.log(res.data.code)
+    console.log(res.data.result.name)
+  })
+
+  axios.get<ResponseData<User>>('/extend/user').then(res => {
+    console.log(res.data.message)
+  })
+
+  axios<ResponseData<User>>('/extend/user',{}).then(res => {
+    console.log(res.data.result.age)
+  })
+}
+
+getUser()

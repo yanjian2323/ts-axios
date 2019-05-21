@@ -106,6 +106,17 @@ router.patch('/extend/patch', (req, res) => {
  res.json(req.body) 
 })
 
+router.get('/extend/user', (req, res) => {
+ res.json({
+   code: 0,
+   message: 'ok',
+   result: {
+     name: 'yanjian',
+     age: 25,
+   }
+ }) 
+})
+
 router.get('/interceptor/get', (req, res) => {
   res.end('hello')
 })
