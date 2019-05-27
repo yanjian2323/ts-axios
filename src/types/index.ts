@@ -24,6 +24,8 @@ export interface AxiosRequestConfig {
   responseType?: XMLHttpRequestResponseType
   timeout?: number
   [proName: string]: any
+  transformRequest?: AxiosTransformer | AxiosTransformer[]
+  transformResponse?: AxiosTransformer | AxiosTransformer[]
 }
 
 export interface AxiosResponse<T = any> {
@@ -82,4 +84,8 @@ export interface AxiosInterceptorManager<T> {
 export interface Interceptors {
   request: InterceptorManager<AxiosRequestConfig>
   response: InterceptorManager<AxiosResponse>
+}
+
+export interface AxiosTransformer {
+  (data: any, headers: any): any
 }

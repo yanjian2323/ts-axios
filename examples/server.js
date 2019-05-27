@@ -125,6 +125,10 @@ router.post('/config/post', (req, res) => {
   res.json(req.body)
 })
 
+router.post('/transform/post', (req, res) => {
+  res.json(req.body)
+})
+
 app.use(router)
 
 const port = process.env.PORT || 8080
