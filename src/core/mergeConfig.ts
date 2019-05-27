@@ -3,11 +3,11 @@ import { deepMerge, isPlainOjbect } from '../helpers/util'
 
 const strat = Object.create(null)
 function defaultStrat(val1: any, val2: any) {
-  return val2 !== 'undefined' ? val2 : val1
+  return val2 !== undefined ? val2 : val1
 }
 
 function from2ValStrat(val1: any, val2: any) {
-  if (val2 !== 'undefined') {
+  if (val2 !== undefined) {
     return val2
   }
 }
